@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider, FacebookAuthProvider, updateProfile } from "firebase/auth";
+import { useState, useEffect } from "react";
+import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider, FacebookAuthProvider, updateProfile, onAuthStateChanged } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,16 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        router.replace("/feed");
+      }
+    });
+    return () => unsubscribe();
+  }, [router]);
 
   const validateUsername = (username: string) => {
     return /^[a-zA-Z0-9_]{3,20}$/.test(username);
@@ -67,13 +77,14 @@ export default function SignupPage() {
         bio: "",
         isAdmin: false,
         isBanned: false,
+        followersCount: 0,
+        followingCount: 0,
         createdAt: serverTimestamp(),
       });
 
-      router.push("/feed");
+      // Wait for auth state to update - onAuthStateChanged will handle redirect
     } catch (err: any) {
       setError(err.message || "Failed to create account");
-    } finally {
       setLoading(false);
     }
   };
@@ -98,13 +109,14 @@ export default function SignupPage() {
         bio: "",
         isAdmin: false,
         isBanned: false,
+        followersCount: 0,
+        followingCount: 0,
         createdAt: serverTimestamp(),
       });
 
-      router.push("/feed");
+      // Wait for auth state to update - onAuthStateChanged will handle redirect
     } catch (err: any) {
       setError(err.message || "Failed to sign up with Google");
-    } finally {
       setLoading(false);
     }
   };
@@ -129,13 +141,14 @@ export default function SignupPage() {
         bio: "",
         isAdmin: false,
         isBanned: false,
+        followersCount: 0,
+        followingCount: 0,
         createdAt: serverTimestamp(),
       });
 
-      router.push("/feed");
+      // Wait for auth state to update - onAuthStateChanged will handle redirect
     } catch (err: any) {
       setError(err.message || "Failed to sign up with GitHub");
-    } finally {
       setLoading(false);
     }
   };
@@ -160,13 +173,14 @@ export default function SignupPage() {
         bio: "",
         isAdmin: false,
         isBanned: false,
+        followersCount: 0,
+        followingCount: 0,
         createdAt: serverTimestamp(),
       });
 
-      router.push("/feed");
+      // Wait for auth state to update - onAuthStateChanged will handle redirect
     } catch (err: any) {
       setError(err.message || "Failed to sign up with Facebook");
-    } finally {
       setLoading(false);
     }
   };

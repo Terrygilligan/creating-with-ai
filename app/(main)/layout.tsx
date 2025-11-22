@@ -19,14 +19,20 @@ export default function MainLayout({
   const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
-    if (!user) {
-      router.push("/login");
+    // Wait for auth to finish loading before redirecting
+    if (loading) return;
+
+    // Only redirect if not already on login/signup pages
+    if (!user && !pathname.startsWith("/login") && !pathname.startsWith("/signup")) {
+      router.replace("/login");
       return;
     }
 
+    if (!user) return;
+
     if (userData?.isBanned) {
       logout();
-      router.push("/login");
+      router.replace("/login");
       return;
     }
 
@@ -35,7 +41,7 @@ export default function MainLayout({
     });
 
     return () => unsubscribe();
-  }, [user, userData, router, logout]);
+  }, [user, userData, loading, pathname, router, logout]);
 
   if (loading) {
     return (
@@ -54,8 +60,13 @@ export default function MainLayout({
     { href: "/explore", icon: Search, label: "Explore" },
     { href: "/upload", icon: Plus, label: "Upload" },
     { href: "/notifications", icon: Bell, label: "Notifications" },
-    { href: `/profile/${userData?.username || user.uid}`, icon: User, label: "Profile" },
+    { href: userData?.username ? `/profile/${userData.username}` : (user ? `/profile/${user.uid}` : "/feed"), icon: User, label: "Profile" },
   ];
+
+  // Add settings link if user is admin
+  if (userData?.isAdmin) {
+    navItems.push({ href: "/admin", icon: Bell, label: "Admin" });
+  }
 
   return (
     <div className="flex flex-col min-h-screen pb-20">

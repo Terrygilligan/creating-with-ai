@@ -11,6 +11,7 @@ import { Heart, Share2, MessageCircle, ArrowLeft, MoreVertical, Flag } from "luc
 import { Button } from "@/components/ui/button";
 import { RevealCard } from "@/components/reveal-card";
 import { ReportModal } from "@/components/report-modal";
+import { CommentSection } from "@/components/comment-section";
 
 export default function PostPage() {
   const params = useParams();
@@ -73,7 +74,7 @@ export default function PostPage() {
         <ArrowLeft size={20} />
       </Button>
 
-      <article className="bg-card rounded-lg border p-4">
+      <article className="bg-card rounded-2xl border p-4">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
@@ -83,7 +84,7 @@ export default function PostPage() {
             </div>
             <div>
               <Link href={`/profile/${post.authorUsername}`}>
-                <p className="font-semibold hover:underline">@{post.authorUsername}</p>
+                <p className="font-display font-semibold hover:underline">@{post.authorUsername}</p>
               </Link>
               <p className="text-xs text-muted-foreground">
                 {new Date(post.createdAt).toLocaleDateString()}
@@ -105,7 +106,7 @@ export default function PostPage() {
         </div>
 
         {post.type === "image" && (
-          <div className="relative w-full aspect-square mb-4 rounded-lg overflow-hidden">
+          <div className="relative w-full aspect-square mb-4 rounded-2xl overflow-hidden border border-transparent media-card-hover">
             <Image
               src={post.mediaUrl}
               alt={post.prompt}
@@ -139,17 +140,19 @@ export default function PostPage() {
           
           <Button variant="ghost" size="sm">
             <MessageCircle size={20} />
-            <span className="ml-2">0</span>
+            <span className="ml-2">{post.commentsCount || 0}</span>
           </Button>
           
           <Link href={`/remix/${post.id}`}>
-            <Button variant="ghost" size="sm">
+            <Button variant="accent" size="sm" className="glow-cyan">
               <Share2 size={20} />
               <span className="ml-2">{post.remixCount}</span>
             </Button>
           </Link>
         </div>
       </article>
+
+      <CommentSection postId={post.id} />
 
       {showReportModal && post && (
         <ReportModal postId={post.id} onClose={() => setShowReportModal(false)} />

@@ -7,6 +7,8 @@ export interface User {
   isAdmin?: boolean;
   isBanned?: boolean;
   fcmToken?: string;
+  followersCount?: number;
+  followingCount?: number;
   createdAt: Date;
 }
 
@@ -25,6 +27,7 @@ export interface Post {
   likesCount: number;
   copiesCount: number;
   remixCount: number;
+  commentsCount: number;
   isPublic: boolean;
   originalPostId?: string;
   createdAt: Date;
@@ -51,6 +54,16 @@ export interface Report {
 export interface Follow {
   userId: string;
   targetId: string;
+  createdAt: Date;
+}
+
+export interface Comment {
+  id: string;
+  postId: string;
+  authorId: string;
+  authorUsername: string;
+  authorPhoto?: string;
+  text: string;
   createdAt: Date;
 }
 

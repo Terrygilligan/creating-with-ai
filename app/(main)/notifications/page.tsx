@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
-import { subscribeToNotifications } from "@/lib/firestore";
+import { subscribeToNotifications, markNotificationAsRead, markAllNotificationsAsRead } from "@/lib/firestore";
 import type { Notification } from "@/types";
 import Link from "next/link";
-import { Heart, Share2, MessageCircle, UserPlus } from "lucide-react";
+import { Heart, Share2, MessageCircle, UserPlus, CheckCheck } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function NotificationsPage() {
   const { user } = useAuth();
@@ -46,9 +47,27 @@ export default function NotificationsPage() {
     );
   }
 
+  const handleMarkAsRead = async (notificationId: string) => {
+    if (!user) return;
+    await markNotificationAsRead(user.uid, notificationId);
+  };
+
+  const handleMarkAllAsRead = async () => {
+    if (!user) return;
+    await markAllNotificationsAsRead(user.uid);
+  };
+
   return (
     <div className="container mx-auto px-4 py-6 max-w-2xl">
-      <h1 className="text-3xl font-bold mb-6">Notifications</h1>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-3xl font-display font-bold">Notifications</h1>
+        {unreadCount > 0 && (
+          <Button variant="outline" size="sm" onClick={handleMarkAllAsRead}>
+            <CheckCheck size={16} className="mr-2" />
+            Mark all as read
+          </Button>
+        )}
+      </div>
 
       {notifications.length === 0 ? (
         <div className="text-center py-12">
@@ -57,14 +76,15 @@ export default function NotificationsPage() {
       ) : (
         <div className="space-y-2">
           {notifications.map((notification) => (
-            <Link
+            <div
               key={notification.id}
-              href={notification.postId ? `/post/${notification.postId}` : `/profile/${notification.fromUsername}`}
+              className={`bg-card rounded-2xl border p-4 hover:bg-accent/10 transition-colors ${
+                !notification.read ? "border-primary/50" : ""
+              }`}
             >
-              <div
-                className={`bg-card rounded-lg border p-4 hover:bg-accent transition-colors ${
-                  !notification.read ? "border-primary" : ""
-                }`}
+              <Link
+                href={notification.postId ? `/post/${notification.postId}` : `/profile/${notification.fromUsername}`}
+                onClick={() => !notification.read && handleMarkAsRead(notification.id)}
               >
                 <div className="flex items-start gap-3">
                   <div className="mt-1">{getNotificationIcon(notification.type)}</div>
@@ -81,8 +101,8 @@ export default function NotificationsPage() {
                     </p>
                   </div>
                 </div>
-              </div>
-            </Link>
+              </Link>
+            </div>
           ))}
         </div>
       )}

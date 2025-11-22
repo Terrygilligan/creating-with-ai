@@ -58,10 +58,10 @@ export function ReportModal({ postId, onClose }: ReportModalProps) {
 
   if (success) {
     return (
-      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-        <Card className="w-full max-w-md">
+      <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <Card className="w-full max-w-md glass-card">
           <CardContent className="p-6">
-            <p className="text-center text-green-600">
+            <p className="text-center text-accent">
               Report submitted successfully. Thank you!
             </p>
           </CardContent>
@@ -71,8 +71,8 @@ export function ReportModal({ postId, onClose }: ReportModalProps) {
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <Card className="w-full max-w-md">
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <Card className="w-full max-w-md glass-card">
         <CardHeader>
           <CardTitle>Report Post</CardTitle>
           <CardDescription>

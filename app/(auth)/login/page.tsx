@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider, FacebookAuthProvider } from "firebase/auth";
+import { useState, useEffect } from "react";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider, FacebookAuthProvider, onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,17 +19,30 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const router = useRouter();
 
+  // Redirect if already logged in
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        router.replace("/feed");
+      }
+    });
+    return () => unsubscribe();
+  }, [router]);
+
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
     try {
+      console.log("Attempting to sign in with email:", email);
       await signInWithEmailAndPassword(auth, email, password);
-      router.push("/feed");
+      console.log("Sign in successful, waiting for redirect...");
+      // Wait for auth state to update - onAuthStateChanged will handle redirect
+      // Don't call router.push here, let the useEffect handle it
     } catch (err: any) {
+      console.error("Sign in error:", err);
       setError(err.message || "Failed to sign in");
-    } finally {
       setLoading(false);
     }
   };
@@ -39,12 +52,14 @@ export default function LoginPage() {
     setError("");
 
     try {
+      console.log("Attempting Google sign in...");
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
-      router.push("/feed");
+      console.log("Google sign in successful, waiting for redirect...");
+      // Wait for auth state to update - onAuthStateChanged will handle redirect
     } catch (err: any) {
+      console.error("Google sign in error:", err);
       setError(err.message || "Failed to sign in with Google");
-    } finally {
       setLoading(false);
     }
   };
@@ -56,10 +71,9 @@ export default function LoginPage() {
     try {
       const provider = new GithubAuthProvider();
       await signInWithPopup(auth, provider);
-      router.push("/feed");
+      // Wait for auth state to update - onAuthStateChanged will handle redirect
     } catch (err: any) {
       setError(err.message || "Failed to sign in with GitHub");
-    } finally {
       setLoading(false);
     }
   };
@@ -71,10 +85,9 @@ export default function LoginPage() {
     try {
       const provider = new FacebookAuthProvider();
       await signInWithPopup(auth, provider);
-      router.push("/feed");
+      // Wait for auth state to update - onAuthStateChanged will handle redirect
     } catch (err: any) {
       setError(err.message || "Failed to sign in with Facebook");
-    } finally {
       setLoading(false);
     }
   };

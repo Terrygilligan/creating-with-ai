@@ -98,7 +98,7 @@ export default function AdminPage() {
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-6xl">
-      <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
+      <h1 className="text-3xl font-display font-bold mb-6">Admin Dashboard</h1>
 
       <Card className="mb-6">
         <CardHeader>
@@ -119,7 +119,7 @@ export default function AdminPage() {
               {filteredReports.map((report, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between p-4 border rounded-lg"
+                  className="flex items-center justify-between p-4 border rounded-2xl"
                 >
                   <div>
                     <p className="font-semibold">Post ID: {report.postId}</p>

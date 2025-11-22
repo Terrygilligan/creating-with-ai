@@ -77,6 +77,7 @@ export default function UploadPage() {
         likesCount: 0,
         copiesCount: 0,
         remixCount: 0,
+        commentsCount: 0,
         isPublic: true,
         createdAt: serverTimestamp(),
       });
@@ -95,7 +96,7 @@ export default function UploadPage() {
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-2xl">
-      <h1 className="text-3xl font-bold mb-6">Upload</h1>
+      <h1 className="text-3xl font-display font-bold mb-6">Upload</h1>
 
       <Card>
         <CardHeader>
@@ -107,7 +108,7 @@ export default function UploadPage() {
               <Label htmlFor="file">Image</Label>
               {preview ? (
                 <div className="relative">
-                  <div className="relative w-full aspect-square rounded-lg overflow-hidden border">
+                  <div className="relative w-full aspect-square rounded-2xl overflow-hidden border border-primary/20 media-card-hover">
                     <img src={preview} alt="Preview" className="object-cover w-full h-full" />
                   </div>
                   <Button
@@ -126,7 +127,7 @@ export default function UploadPage() {
               ) : (
                 <label
                   htmlFor="file"
-                  className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed rounded-lg cursor-pointer hover:bg-accent"
+                  className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-primary/30 rounded-2xl cursor-pointer hover:bg-accent/10 hover:border-primary/50 transition-all duration-300"
                 >
                   <Upload size={48} className="mb-2 text-muted-foreground" />
                   <p className="text-sm text-muted-foreground">
@@ -153,6 +154,7 @@ export default function UploadPage() {
                 placeholder="Describe your AI creation..."
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
+                className="font-mono"
                 required
               />
             </div>
@@ -164,6 +166,7 @@ export default function UploadPage() {
                 placeholder="What to avoid..."
                 value={negativePrompt}
                 onChange={(e) => setNegativePrompt(e.target.value)}
+                className="font-mono"
               />
             </div>
 

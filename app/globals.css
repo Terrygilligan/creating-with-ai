@@ -4,21 +4,23 @@
 
 @layer base {
   :root {
+    /* Light mode - adjusted brand colors */
     --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    --foreground: 0 0% 7%;
+    --surface: 0 0% 98%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --card-foreground: 0 0% 7%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 262 83% 58%;
+    --popover-foreground: 0 0% 7%;
+    --primary: 262 83% 58%; /* #8b5cf6 */
     --primary-foreground: 0 0% 100%;
     --secondary: 0 0% 96.1%;
     --secondary-foreground: 0 0% 9%;
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
+    --accent: 180 100% 50%; /* #06f4d4 - neon cyan */
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 84% 60%; /* #f43f5e - hot coral */
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
@@ -28,27 +30,29 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
+    --radius: 1rem; /* 16px for generous corners */
   }
 
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 262 83% 58%;
+    /* Dark mode - official brand colors */
+    --background: 0 0% 0%; /* Pure black #000000 */
+    --foreground: 0 0% 96%; /* Almost white #f5f5f5 */
+    --surface: 0 0% 7%; /* Dark gray #121212 */
+    --card: 0 0% 7%; /* Dark gray #121212 */
+    --card-foreground: 0 0% 96%; /* Almost white #f5f5f5 */
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 262 83% 58%; /* Electric violet #8b5cf6 */
     --primary-foreground: 0 0% 100%;
     --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary-foreground: 0 0% 96%;
     --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
+    --muted-foreground: 0 0% 64%; /* Medium gray #a3a3a3 */
+    --accent: 180 100% 50%; /* Neon cyan #06f4d4 */
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 84% 60%; /* Hot coral #f43f5e */
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
+    --border: 0 0% 20%;
     --input: 0 0% 14.9%;
     --ring: 262 83% 58%;
     --chart-1: 220 70% 50%;
@@ -56,6 +60,7 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --radius: 1rem;
   }
 }
 
@@ -65,6 +70,57 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+  
+  code, pre, .mono {
+    @apply font-mono;
+  }
+}
+
+@layer utilities {
+  /* Glass-morphism effect */
+  .glass {
+    @apply backdrop-blur-md bg-opacity-10;
+  }
+  
+  .glass-card {
+    @apply backdrop-blur-lg bg-surface/10 border border-white/10;
+  }
+  
+  /* Glow effects */
+  .glow-primary {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+  }
+  
+  .glow-accent {
+    box-shadow: 0 0 20px rgba(6, 244, 212, 0.5);
+  }
+  
+  .glow-cyan {
+    box-shadow: 0 0 15px rgba(6, 244, 212, 0.4);
+  }
+  
+  /* Gradient backgrounds */
+  .gradient-primary {
+    background: linear-gradient(135deg, #8b5cf6 0%, #06f4d4 100%);
+  }
+  
+  .gradient-violet-cyan {
+    background: linear-gradient(135deg, #8b5cf6 0%, #06f4d4 100%);
+  }
+  
+  /* Hover effects for media cards */
+  .media-card-hover {
+    @apply transition-all duration-300;
+  }
+  
+  .media-card-hover:hover {
+    @apply border-primary border;
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
   }
 }
 

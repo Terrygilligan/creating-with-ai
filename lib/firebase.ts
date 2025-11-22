@@ -13,6 +13,8 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
+// Initialize Firebase only on client side
+// All components using these should be client components ("use client")
 let app: FirebaseApp;
 let auth: Auth;
 let db: Firestore;
@@ -33,6 +35,13 @@ if (typeof window !== "undefined") {
   if ("serviceWorker" in navigator) {
     messaging = getMessaging(app);
   }
+} else {
+  // Server-side: Create dummy objects to prevent build errors
+  // These should never be used since all Firebase usage is in client components
+  app = {} as FirebaseApp;
+  auth = {} as Auth;
+  db = {} as Firestore;
+  storage = {} as FirebaseStorage;
 }
 
 export { app, auth, db, storage, messaging };

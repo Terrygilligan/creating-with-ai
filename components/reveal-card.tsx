@@ -16,10 +16,10 @@ export function RevealCard({ prompt, negativePrompt, model, parameters }: Reveal
   const [isRevealed, setIsRevealed] = useState(false);
 
   return (
-    <Card className="w-full">
+    <Card className="w-full border-primary/20 hover:border-primary/40 transition-colors">
       <CardContent className="p-4">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold">AI Prompt Details</h3>
+          <h3 className="font-display font-semibold">AI Prompt Details</h3>
           <Button
             variant="ghost"
             size="icon"
@@ -33,27 +33,27 @@ export function RevealCard({ prompt, negativePrompt, model, parameters }: Reveal
           <div className="space-y-4">
             <div>
               <p className="text-sm font-medium mb-1">Prompt</p>
-              <p className="text-sm text-muted-foreground">{prompt}</p>
+              <p className="text-sm text-muted-foreground font-mono">{prompt}</p>
             </div>
             
             {negativePrompt && (
               <div>
                 <p className="text-sm font-medium mb-1">Negative Prompt</p>
-                <p className="text-sm text-muted-foreground">{negativePrompt}</p>
+                <p className="text-sm text-muted-foreground font-mono">{negativePrompt}</p>
               </div>
             )}
             
             {model && (
               <div>
                 <p className="text-sm font-medium mb-1">Model</p>
-                <p className="text-sm text-muted-foreground">{model}</p>
+                <p className="text-sm text-muted-foreground font-mono">{model}</p>
               </div>
             )}
             
             {parameters && Object.keys(parameters).length > 0 && (
               <div>
                 <p className="text-sm font-medium mb-1">Parameters</p>
-                <pre className="text-xs text-muted-foreground bg-muted p-2 rounded overflow-auto">
+                <pre className="text-xs text-muted-foreground bg-muted p-3 rounded-lg overflow-auto font-mono">
                   {JSON.stringify(parameters, null, 2)}
                 </pre>
               </div>
